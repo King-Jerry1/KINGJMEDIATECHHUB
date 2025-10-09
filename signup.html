@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Join Our Platform - Sign Up as Client, Talent or Mentor</title>
+    
+      <!-- SEO Meta Tags -->
+      <meta name="description" content="Sign up to connect with professionals, showcase your skills, or hire top talent. Our platform empowers clients, talents, and mentors in the tech and creative space.">
+      <meta name="keywords" content="Sign up, tech platform, talent signup, mentor signup, hire freelancers, creative professionals, join as client, join as talent, join as mentor">
+      <meta name="author" content="King J Media">
+      <meta name="robots" content="index, follow">
+    
+      <!-- Open Graph for Social Sharing -->
+      <meta property="og:title" content="Join Our Platform - Sign Up Today">
+      <meta property="og:description" content="Be part of a thriving digital community. Sign up as a client, talent, or mentor.">
+      <meta property="og:image" content="https://yourdomain.com/images/preview.png">
+      <meta property="og:url" content="https://yourdomain.com/signup">
+      <meta property="og:type" content="website">
+    
+      <!-- Twitter Card -->
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:title" content="Join Our Platform - Sign Up Today">
+      <meta name="twitter:description" content="Sign up and collaborate with creative talents, clients, and mentors.">
+      <meta name="twitter:image" content="https://yourdomain.com/images/preview.png">
+    
+      <!-- Styles and Scripts -->
+      <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+      <link rel="stylesheet" href="signup.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
+    
+   
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <script src="bootstrap/js/bootstrap.js"></script>
+    
+    </head>
+    
+<body>
+    <div class=" container-fluid  bgcolor1 d-flex justify-content-center align-items-center py-5">
+          <div class="container bg-white rounded-5 shadow p-3 p-sm-4 p-md-5 p-5 shadow">
+            <div class="row g-4 text-center">
+
+              <div class="col-lg-6 col-12 slider-container d-md-block rounded-circle  ">
+                <div class="slider-wrapper position-relative overflow-y rounded shadow">
+                  <!-- Slides -->
+                  <div class="slide active">
+                    <img src="./images/1.png" alt="Slide 1" class="img-fluid w-100 h-100">
+                  </div>
+                  <div class="slide">
+                    <img src="./images/2.png" alt="Slide 2" class="img-fluid w-100 h-100">
+                  </div>
+                  <div class="slide">
+                    <img src="./images/3.png" alt="Slide 3" class="img-fluid w-100 h-100">
+                  </div>
+                  <div class="slide">
+                    <img src="./images/4.png" alt="Slide 4" class="img-fluid w-100 h-100">
+                  </div>
+                </div>
+              
+                <!-- Dots -->
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                  <span class="dot active" onclick="currentSlide(0)"></span>
+                  <span class="dot" onclick="currentSlide(1)"></span>
+                  <span class="dot" onclick="currentSlide(2)"></span>
+                  <span class="dot" onclick="currentSlide(3)"></span>
+                </div>
+              
+                <!-- Text -->
+                <div class="text-center mt-3 text-dark" id="slideText"></div>
+              </div>
+              
+      
+                <div class="col-lg-6 col-12 justify-content-center align-items-center  ">
+                    <span class="logo text-dark d-lg-flex d-md-block justify-content-around px-5">
+                        <img src="./logos/loader.png " class="" alt="" width="80px" height="90px">
+
+  
+                    <div class="pt-2 "> 
+                      <h4 id="formTitle">Create Client Account</h4>
+                      <p id="formSubtext">Join as Client, Talent or Mentor</p>
+                    </div>
+                          
+                        
+                       
+                    </span>
+    
+                    <!-- Toggle Buttons -->
+                    <div class="tabs my-3">
+                        <button class="btn btn-custom role-btn active" data-role="client">Client</button>
+                        <button class="btn btn-custom role-btn" data-role="talent">Talent</button>
+                        <button class="btn btn-custom role-btn" data-role="mentor">Mentor</button>
+                    </div>
+    
+                    <!-- Forms Container -->
+                    <div id="formContainer" class="px-5 shadow pb-5 pt-4">
+                        <!-- Client Form -->
+                        <form id="clientForm" class="role-form" action="#" method="post">
+                          <div class="form-floating-input ">
+                            <i class="bi bi-person-fill p-lg-3 p-md-2"></i>
+                            <input type="text" name="fullname" required placeholder=" " />
+                            <label>Full Name</label>
+                          </div>
+                          <div class="form-floating-input">
+                            <i class="bi bi-building p-lg-3 p-md-2"></i>
+                            <input type="text" name="company" placeholder=" " required>
+                            <label>Company</label>
+                          </div>
+                          <div class="form-floating-input">
+                            <i class="bi bi-envelope-fill p-lg-3 p-md-2"></i>
+                            <input type="email" name="email" placeholder=" " required>
+                            <label>Email</label>
+                          </div>
+                        
+                          <div class="form-floating-input position-relative">
+                            <i class="bi bi-briefcase-fill ms-n2 p-lg-2"></i> <!-- Left icon -->
+                          
+                            <!-- Select field -->
+                            <select name="service" id="service-select" required onchange="toggleOtherService(); floatLabel(this);" class="skill-dropdown">
+                              <option value="" disabled selected hidden></option>
+                              <option value="Web Design">Web Design</option>
+                              <option value="Brand Identity">Brand Identity</option>
+                              <option value="Digital Marketing">Digital Marketing</option>
+                              <option value="Content Creation">Content Creation</option>
+                              <option value="SEO Services">SEO Services</option>
+                             
+                              <option value="Other">Other</option>
+
+                            </select>
+                          
+                            <!-- Dropdown arrow icon -->
+                            <i class="bi bi-caret-down-fill dropdown-arrow "></i>
+                          
+                            <label style="position:absolute; top: -12px;">Service Interested In</label>
+                          </div>
+                          
+                          
+                          <div class="form-floating-input d-none" id="otherServiceInput">
+                            <i class="bi bi-pencil-fill me-lg-1 ms-md-2"></i>
+                            <input type="text" name="other_service" placeholder=" " />
+                            <label>Specify Other Service</label>
+                          </div>                          
+                          
+                          <div class="form-floating-input">
+                            <i class="bi bi-lock-fill p-lg-2"></i>
+                            <input type="password" name="password" placeholder=" " required>
+                            <label>Password</label>
+                            <i class="bi bi-eye password-toggle" onclick="togglePassword(this)"></i>
+                          </div>
+                          <button type="submit" class="btn btn-pink mt-3">Submit as Client</button>
+                        </form>
+                      
+                        <!-- Talent Form -->
+                        <form id="talentForm" class="role-form d-none" action="#" method="post">
+                          <div class="form-floating-input">
+                            <i class="bi bi-person-fill p-3"></i>
+                            <input type="text" name="fullname" required placeholder=" " />
+                            <label>Full Name</label>
+                          </div>
+                          <div class="form-floating-input">
+                            <i class="bi bi-lightbulb-fill ms-n2 p-lg-3"></i>
+                            <select name="skill" id="skill-select"  required onchange="toggleOtherSkill(); floatLabel(this);" 
+                            class="skill-dropdown">
+                              <option value="" disabled selected hidden></option>
+                              <option value="Web Development">Web Development</option>
+                              <option value="Graphic Design">Graphic Design</option>
+                              <option value="Video Editing">Video Editing</option>
+                              <option value="UI/UX Design">UI/UX Design</option>
+                              <option value="Digital Marketing">Digital Marketing</option>
+                              <option value="Other">Other</option>
+                            </select>
+                              <!-- Dropdown arrow icon -->
+                              <i class="bi bi-caret-down-fill dropdown-arrow dropdowcon"></i>
+                            <label class="" style="position:absolute; top: -12px">Skill</label>
+                          </div>
+                          
+                          <div class="form-floating-input" id="other-skill-container" style="display: none;">
+                            <i class="bi bi-pencil-fill p-3"></i>
+                            <input type="text" name="other-skill" id="other-skill" placeholder=" " oninput="floatLabel(this);" />
+                            <label>Specify Other Skill</label>
+                          </div>
+                          
+                          <div class="form-floating-input">
+                            <i class="bi bi-linkedin p-3"></i>
+                            <input type="text" name="linkedin" required placeholder=" " />
+                            <label>LinkedIn Profile</label>
+                          </div>
+                          <div class="form-floating-input ">
+                            <i class="bi bi-envelope-fill p-3"></i>
+                            <input type="text" name="email" required placeholder=" " />
+                            <label>Email</label>
+                          </div>
+                          <div class="form-floating-input">
+                            <i class="bi bi-lock-fill p-1"></i>
+                            <input type="password" name="password" placeholder=" " required>
+                            <label>Password</label>
+                            <i class="bi bi-eye password-toggle" onclick="togglePassword(this)"></i>
+                          </div>
+
+                          <button type="submit" class="btn btn-pink mt-3">Submit as Talent</button>
+                        </form>
+                      
+                        <!-- Mentor Form -->
+                        <form id="mentorForm" class="role-form d-none" action="#" method="post">
+                          <div class="form-floating-input">
+                            <i class="bi bi-person-fill p-3"></i>
+                            <input type="text" name="fullname" required placeholder=" " />
+                            <label>Full Name</label>
+                          </div>
+                          <div class="form-floating-input">
+                            <i class="bi bi-lightbulb-fill p-3"></i>
+                            <input type="text" name="expertise" required placeholder=" " />
+                            <label>Field of Expertise</label>
+                          </div>
+                          <div class="form-floating-input">
+                            <i class="bi bi-linkedin p-3"></i>
+                            <input type="url" name="linkedin" required placeholder=" " />
+                            <label>LinkedIn Profile</label>
+                          </div>
+                          <div class="form-floating-input">
+                            <i class="bi bi-envelope-fill p-3"></i>
+                            <input type="email" name="email" required placeholder=" " />
+                            <label>Email</label>
+                          </div>
+                          <div class="form-floating-input">
+                            <i class="bi bi-lock-fill p-1"></i>
+                            <input type="password" name="password" placeholder=" " required>
+                            <label>Password</label>
+                            <i class="bi bi-eye password-toggle" onclick="togglePassword(this)"></i>
+                          </div>
+                          <button type="submit" class="btn btn-pink mt-3">Submit as Mentor</button>
+                        </form>
+                      </div>
+    
+                      <p class="mt-3 text-dark">
+                        Already have an account?
+                        <a style="text-decoration: none;" class="link" href="login.html">
+                          <i class="bi bi-box-arrow-in-right"></i> Sign In
+                        </a>
+                      </p>
+                      </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+      const roleButtons = document.querySelectorAll('.role-btn');
+      const forms = document.querySelectorAll('.role-form');
+      const formTitle = document.getElementById('formTitle');
+      const formSubtext = document.getElementById('formSubtext');
+  
+      roleButtons.forEach(button => {
+          button.addEventListener('click', () => {
+              const role = button.getAttribute('data-role');
+  
+              // Remove active from all buttons
+              roleButtons.forEach(btn => btn.classList.remove('active'));
+  
+              // Add active class to clicked button
+              button.classList.add('active');
+  
+              // Hide all forms
+              forms.forEach(form => form.classList.add('d-none'));
+  
+              // Show selected role form
+              document.getElementById(`${role}Form`).classList.remove('d-none');
+  
+              // Update text
+              formTitle.innerText = `Create ${capitalize(role)} Account`;
+              formSubtext.innerText = `Join as a ${capitalize(role)} today!`;
+          });
+      });
+  
+      function capitalize(str) {
+          return str.charAt(0).toUpperCase() + str.slice(1);
+      }
+  </script>
+  
+
+    <!-- script for toogle password -->
+    <script>
+        function togglePassword(icon) {
+          const input = icon.previousElementSibling.previousElementSibling;
+          if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+          } else {
+            input.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+          }
+        }
+      </script>
+
+
+      <!-- Image Slider script -->
+      
+ 
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          let slideIndex = 0;
+          const slides = document.querySelectorAll(".slide");
+          const dots = document.querySelectorAll(".dot");
+          const slideTextBox = document.getElementById("slideText");
+        
+          // Texts matching each image
+          const slideTexts = [
+            {
+              title: "Get Started!",
+              desc: "Best platform  to bring together tech talents under one unified system."
+            },
+            {
+              title: "Boost Your Productivity",
+              desc: "Leverage modern tools and workflows <br> to achieve more in less time."
+            },
+            {
+              title: "Innovate with Confidence",
+              desc: "Turn ideas into reality <br> with expert guidance and support."
+            },
+            {
+              title: "Join a Thriving Community",
+              desc: "Discover new skills to level up your creativity and stay ahead in tech."
+            }
+          ];
+        
+          function showSlide(index) {
+            if (index >= slides.length) slideIndex = 0;
+            if (index < 0) slideIndex = slides.length - 1;
+        
+            // Reset all slides + dots
+            slides.forEach((slide, i) => {
+              slide.classList.remove("active");
+              dots[i].classList.remove("active");
+            });
+        
+            // Show current slide + dot
+            slides[slideIndex].classList.add("active");
+            dots[slideIndex].classList.add("active");
+        
+            // Update text with fade
+            slideTextBox.innerHTML = `
+              <div class="fade-text">
+                <h4>${slideTexts[slideIndex].title}</h4>
+                <p>${slideTexts[slideIndex].desc}</p>
+              </div>
+            `;
+            setTimeout(() => {
+              slideTextBox.querySelector(".fade-text").classList.add("show");
+            }, 50);
+          }
+        
+          function changeSlide(n) {
+            slideIndex += n;
+            showSlide(slideIndex);
+          }
+        
+          function currentSlide(n) {
+            slideIndex = n;
+            showSlide(slideIndex);
+          }
+        
+          // Expose functions for onclick
+          window.currentSlide = currentSlide;
+          window.changeSlide = changeSlide;
+        
+          // Auto-slide every 4s
+          setInterval(() => changeSlide(1), 4000);
+        
+          // Show first slide + text
+          showSlide(slideIndex);
+        });
+        </script>
+
+        
+       
+        </script>
+        <!-- SCRIPT FOR dropdown on skils Slide -->
+        <script>
+          function toggleOtherSkill() {
+            const skillSelect = document.getElementById('skill-select');
+            const otherSkillContainer = document.getElementById('other-skill-container');
+            const otherSkillInput = document.getElementById('other-skill');
+        
+            if (skillSelect.value === 'Other') {
+              otherSkillContainer.style.display = 'block';
+              otherSkillInput.required = true;
+            } else {
+              otherSkillContainer.style.display = 'none';
+              otherSkillInput.required = false;
+            }
+          }
+        
+          function floatLabel(element) {
+            const label = element.nextElementSibling;
+            if (element.value) {
+              label.classList.add('float');
+            } else {
+              label.classList.remove('float');
+            }
+          }
+        
+          // Trigger float on page load (in case fields are pre-filled)
+          window.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.form-floating-input input, .form-floating-input select').forEach(el => {
+              floatLabel(el);
+            });
+          });
+        </script>
+        
+
+        <!-- script  for client dropdown services -->
+              <script>
+                function toggleOtherService() {
+                  const serviceSelect = document.getElementById('service-select');
+                  const otherInput = document.getElementById('otherServiceInput');
+                
+                  if (serviceSelect.value === 'Other') {
+                    otherInput.classList.remove('d-none');
+                  } else {
+                    otherInput.classList.add('d-none');
+                  }
+                }
+                
+
+              </script>
+        
+</body>
+</html>

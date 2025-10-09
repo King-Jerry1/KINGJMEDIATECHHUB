@@ -1,0 +1,564 @@
+@font-face {
+  font-family: 'Devant Pro';
+  src: url('https://yourdomain.com/fonts/DevantPro-Regular.woff2') format('woff2'),
+       url('https://yourdomain.com/fonts/DevantPro-Regular.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+/* body {
+  font-family: 'Devant Pro', sans-serif;
+}
+
+h1 {
+  font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', Charcoal, 'Helvetica Inserat', 'Bitstream Vera Sans Bold', 'Arial Black', sans-serif;
+} */
+
+
+
+/* Navbar base */
+.navbar {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  position: sticky;
+  top: 0;
+    /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.25); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* Optional subtle texture */
+  background-image: url("https://www.transparenttextures.com/patterns/escheresque.png");
+  background-repeat: repeat;
+  background-size: auto;
+  z-index: 1000;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-around; /* logo left, links right */
+  align-items: center;
+}
+
+.logo img {
+  max-height: 45px;
+}
+.bg-pattern{
+  position: fixed;
+
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.25); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* Optional subtle texture */
+  background-image: url("https://www.transparenttextures.com/patterns/escheresque.png");
+  background-repeat: repeat;
+  background-size: auto;
+}
+
+/* Nav links */
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #00afef;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  list-style: none;
+  padding: 0.5rem 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  min-width: 180px;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #333;
+}
+
+.dropdown-menu li a:hover {
+  background: #f5f5f5;
+}
+
+/* Hamburger */
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+/* Flex container for logo + hamburger */
+.nav-container {
+  display: flex;
+  justify-content: space-around ; /* logo left, toggle right */
+  align-items: center;
+  width: 100%;
+
+}
+
+/* for Nav after hovering under 3 circle dots */
+
+/* Make sure each li can hold pseudo elements */
+.nav-links li {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-links a {
+  color: #000; /* black text */
+  font-weight: 500;
+  text-decoration: none;
+  padding-bottom: 14px; /* space for dots */
+  position: relative;
+  display: inline-block;
+}
+
+/* === Dots setup === */
+.nav-links a::before,
+.nav-links a::after,
+.nav-links a span::before {
+  content: "";
+  position: absolute;
+  bottom: 2px; /* closer to text */
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #00afef, #ff0090);
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+/* Left dot */
+.nav-links a::before {
+  left: 15%;
+  transform: translateX(-12px);
+}
+
+/* Middle dot */
+.nav-links a span::before {
+  left: 40%;
+  transform: translateX(-50%) scale(0.6);
+}
+
+/* Right dot */
+.nav-links a::after {
+  left: 65%;
+  transform: translateX(12px);
+}
+
+/* === Hover effect === */
+.nav-links a:hover::before,
+.nav-links a:hover::after,
+.nav-links a:hover span::before {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+
+/* main section */
+/* Gradient Background */
+.hero-section {
+  background: linear-gradient(135deg, #f0f8ff, #ffe6f0, #f5faff);
+}
+
+/* Gradient Text */
+.text-gradient-primary {
+  background: linear-gradient(90deg,  #00afef, #ff0090);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Gradient Text */
+.text-arrow {
+  background:  #00afef,
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+
+}
+
+.text-arrow:hover{
+  background:  #ff0090,
+}
+
+/* Badge */
+.badge-custom {
+  background: #f0f8ff;
+  color: #00afef;
+  font-weight: 600;
+}
+
+/* Extra shadow for floating cards */
+.shadow-custom {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile styles */
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .nav-container {
+  display: flex;
+  justify-content: space-between; /* logo left, toggle right */
+  align-items: center;
+  width: 100%;
+
+}
+
+
+
+  .menu-toggle {
+    display: block;
+    order: 2; /* push hamburger to the right */
+  }
+
+  .nav-container .bi-list {
+ padding-right: 25px;
+}
+
+
+  .logo {
+    order: 1; /* logo stays left */
+  }
+.nav-links {
+  position: fixed;
+  top: 0;
+  left: -100%; /* hidden off-screen */
+  height: 100vh;
+  width: 240px;
+
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.25); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 5rem 2rem;
+
+  /* Style */
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
+  transition: left 0.3s ease;
+  overflow-y: auto;
+  z-index: 999; /* make it visible above content */
+
+  /* Optional subtle texture */
+  background-image: url("https://www.transparenttextures.com/patterns/escheresque.png");
+  background-repeat: repeat;
+  background-size: auto;
+}
+
+.bg-pattern{
+  position: fixed;
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.25); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* Optional subtle texture */
+  background-image: url("https://www.transparenttextures.com/patterns/escheresque.png");
+  background-repeat: repeat;
+  background-size: auto;
+}
+
+.nav-links.active {
+  left: 0; /* slide in when active */
+}
+
+.nav-links a {
+  opacity: 1;
+  color: #000; /* pure black text */
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #00afef; /* neon glassy hover */
+}
+
+
+  .nav-links.active {
+    left: 0; /* slide in from left */
+  }
+
+  /* Disable hover dropdown on mobile */
+  .dropdown:hover .dropdown-menu {
+    display: none;
+  }
+
+  .dropdown .dropdown-menu {
+    position: static;
+    border: none;
+    padding-left: 1rem;
+  }
+}
+
+/* Toggle animation (hamburger → X) */
+.menu-toggle.active i::before {
+  content: "\f62a"; /* Bootstrap X icon */
+  font-family: "bootstrap-icons";
+}
+
+/* avater profile stacking  */
+.avatar-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-left: -10px; /* overlap effect */
+  background: #f8f9fa; /* fallback bg */
+}
+
+.avatar-img:first-child {
+  margin-left: 0; /* remove negative margin for the first one */
+}
+
+.stacked-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  position: relative;
+  margin-left: -15px; /* overlap each new avatar */
+  background: #f8f9fa;
+  z-index: 1;
+}
+
+.stacked-avatar:first-child {
+  margin-left: 0; /* first avatar stays in place */
+  z-index: 5;
+}
+
+.stacked-avatar:nth-child(2) { z-index: 4; }
+.stacked-avatar:nth-child(3) { z-index: 3; }
+.stacked-avatar:nth-child(4) { z-index: 2; }
+.stacked-avatar:nth-child(5) { z-index: 1; }
+
+/* Diagonal Line */
+.diagonal-line {
+  width: 300px;
+  height: 6px;
+  background: linear-gradient(135deg, #00bfff, #ff69b4);
+  transform: rotate( -4deg);
+  position: absolute;
+  bottom: -10px;
+  left: 50px; /* adjust as needed */
+  border-radius: 2px;
+  right: 50px;
+}
+
+@media(max-width: 720px){
+  /* Diagonal Line */
+.diagonal-line {
+  width: 300px;
+  height: 6px;
+  background: linear-gradient(135deg, #00bfff, #ff69b4);
+  transform: rotate( -4deg);
+  position: absolute;
+  bottom: -20px;
+  left: 50px; /* adjust as needed */
+  border-radius: 2px;
+  right: 50px;
+}
+}
+
+.bg-infos{
+  background-color: #e2e8fb;
+}
+
+.brown{
+  background-color:#9f5517;
+}
+
+.green{
+   background-color:#196507;
+}
+
+.pink{
+   background-color:#fe0090;
+}
+
+.armygreen{
+   background-color:#617d0e;
+}
+.lightblue{
+   background-color:#4169e1;
+}
+
+.view-link {
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.view-link:hover {
+  background-color: #ff69b4; /* Pink on hover */
+  color: #fff;
+  cursor: pointer;
+}
+
+
+
+  /* Fade and zoom animation for each student image */
+
+    /* Fix buttons overlapping or blocked */
+  .carousel-control-prev,
+  .carousel-control-next {
+    z-index: 10;
+    width: 60px;
+    height: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .carousel-item.active img {
+    animation: zoomFade 1.2s ease-in-out;
+  }
+
+  @keyframes zoomFade {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Smooth transition for the carousel */
+  .carousel-item {
+    transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+  }
+
+
+   /* Default blue dots */
+  .carousel-indicators [data-bs-target] {
+    background-color: #4169e1; /* blue */
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: 50%;
+    opacity: 0.8;
+    transition: all 0.3s ease-in-out; /* Bootstrap-friendly animation */
+  }
+
+  .carousel-indicators .active {
+    background-color: #fe0090; /* pink */
+    width: 14px;
+    height: 14px;
+    opacity: 1;
+  }
+
+  /* Hover effect using Bootstrap utilities */
+  .carousel-indicators [data-bs-target]:hover {
+    background-color: #fe0090 !important; /* pink */
+  /*  box-shadow: 0 0 0.25rem rgba(255, 105, 180, 0.6);
+    scale: 1.15;  Bootstrap 5.3-friendly scaling */
+  }
+  
+/* footer style */
+
+ .footer a:hover {
+    color: #fe0090 !important; /* Pink hover */
+  }
+
+  .footer input,
+  .footer button {
+    border-radius: 8px;
+  }
+
+  .footer .btn-primary {
+    background-color: #4169e1;
+    border: none;
+  }
+
+  .footer .btn-primary:hover {
+    background-color: #fe0090;
+  }
+
+   /* Base style for navigation buttons */
+  .swiper-button-prev,
+  .swiper-button-next {
+    background-color: #949494; /* Blue */
+    border-radius: 50%;
+    width: 80px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  /* Hover effect */
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover .active {
+    background-color: rgb(255, 0, 128); /* Pink on hover */
+    transform: scale(1.1); /* optional: subtle zoom on hover */
+  }
+
+  /* Icon inside button */
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    color: #fff; /* icon color */
+    font-size: 20px; 
+  }
+
+  .swiper-pagination-bullet {
+  background-color: #ff0080; /* Blue for inactive */
+  width: 12px;
+  height: 12px;
+  opacity: 1;
+  transition: background-color 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+
+/* Hover effect for all bullets */
+.swiper-pagination-bullet:hover {
+  background-color: #ff0080; /* Pink on hover */
+  transform: scale(1.2); /* optional zoom on hover */
+}
+
+/* Active bullet */
+.swiper-pagination-bullet-active {
+  background-color: #ff0080; /* Pink for active */
+  transform: scale(1.2); /* optional bigger size for active */
+}
