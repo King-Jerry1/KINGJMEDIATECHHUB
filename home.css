@@ -185,6 +185,19 @@ h1 {
   transform: translateX(0) scale(1);
 }
 
+/* === for toogle icon animation starts === */
+.menu-toggle {
+  cursor: pointer;
+  font-size: 1.8rem;
+  color: #333;
+  transition: transform 0.3s ease;
+}
+
+.menu-toggle.active {
+  transform: rotate(90deg);
+}
+/* === for toogle icon animation ends === */
+
 
 /* main section */
 /* Gradient Background */

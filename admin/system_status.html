@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>System Status -- King J Media Tech Hub</title>
+
+<!-- SEO -->
+<meta name="description" content="Admin dashboard for King J Media Tech Hub — manage users, assignments, payments, and more.">
+<meta name="author" content="Comr. Jeremiah Isaiah">
+<meta name="robots" content="index, follow">
+<!-- favicon -->
+<link rel="shortcut icon" href="./logos/loader.png" type="image/x-icon">
+<!-- Libraries -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.1/dist/cropper.min.css" rel="stylesheet">
+<style>
+    /* ===== Base Layout ===== */
+    
+    body {
+        margin: 0;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f4f6f8;
+    }
+    /* ===== Modal Backdrop (lighter) ===== */
+    
+    .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.1) !important;
+    }
+    /* ===== Sidebar ===== */
+    
+    aside {
+        width: 260px;
+        background: #1e1e2f;
+        color: #fff;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        z-index: 1050;
+    }
+    
+    aside img {
+        width: 180px;
+        margin: 20px auto;
+        display: block;
+    }
+    
+    aside ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    aside ul li a {
+        display: block;
+        padding: 12px 20px;
+        color: #ddd;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+    
+    aside ul li a:hover,
+    aside ul li a.active {
+        background: #007bff;
+        color: #fff;
+    }
+    
+    @media (max-width: 992px) {
+        aside {
+            transform: translateX(-100%);
+        }
+        aside.active {
+            transform: translateX(0);
+        }
+    }
+    /* ===== Main Content ===== */
+    
+    main {
+        flex-grow: 1;
+        margin-left: 260px;
+        overflow-y: auto;
+        height: 100vh;
+        background: #f8f9fa;
+        transition: margin-left 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    @media (max-width: 992px) {
+        main {
+            margin-left: 0;
+        }
+    }
+    
+    .main-content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+    }
+    
+    header {
+        background: #fff;
+        padding: 10px 20px;
+        border-bottom: 1px solid #dee2e6;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+    
+    footer {
+        background: #1e1e2f;
+        color: white;
+        text-align: center;
+        padding: 10px;
+    }
+    /* ===== Menu Toggle Button ===== */
+    
+    .menu-toggle {
+        display: none;
+        position: fixed;
+        top: 15px;
+        right: 20px;
+        z-index: 1000;
+        font-size: 28px;
+        cursor: pointer;
+        color: #0056b3;
+        transition: transform 0.3s ease, color 0.3s ease;
+    }
+    
+    .menu-toggle:hover {
+        transform: scale(1.1);
+        color: #027cff;
+    }
+    
+    @media (max-width: 992px) {
+        .menu-toggle {
+            display: block;
+        }
+    }
+    
+    .menu-toggle.active #menu-icon {
+        transform: rotate(180deg);
+        transition: transform 0.3s ease;
+    }
+    
+    #menu-icon {
+        transition: all 0.3s ease;
+    }
+    /* ===== Dropdown Styling ===== */
+    
+    .dropdown {
+        position: relative;
+    }
+    
+    .dropdown img {
+        border: 2px solid #dee2e6;
+        transition: transform 0.2s ease;
+    }
+    
+    .dropdown img:hover {
+        transform: scale(1.05);
+    }
+    
+    .dropdown i {
+        transition: transform 0.2s ease;
+    }
+    
+    .dropdown.show i {
+        transform: rotate(180deg);
+    }
+    
+    #sidebar ul li a:hover {
+        background: #2c2c44;
+        border-radius: 5px;
+    }
+    
+    .submenu {
+        display: none;
+        transition: all 0.3s ease;
+    }
+    
+    .submenu.show {
+        display: block;
+    }
+    
+    .toggle-icon {
+        transition: transform 0.3s ease;
+    }
+    
+    .rotate {
+        transform: rotate(180deg);
+    }
+    /* ===== Notification Pane ===== */
+    
+    .notification-pane {
+        position: fixed;
+        top: 0;
+        right: -400px;
+        width: 350px;
+        height: 100vh;
+        background: #fff;
+        box-shadow: -3px 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 2000;
+        transition: right 0.4s ease;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .notification-pane.active {
+        right: 0;
+    }
+    
+    .notification-pane .pane-header {
+        padding: 15px 20px;
+        border-bottom: 1px solid #dee2e6;
+        background: #f8f9fa;
+    }
+    
+    .notification-pane .pane-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+    }
+    
+    .notification-item .icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .notification-pane .quick-buttons {
+        position: absolute;
+        bottom: 15px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    .notification-pane .quick-buttons button {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: none;
+        transition: all 0.3s;
+    }
+    
+    .notification-pane .quick-buttons button:hover {
+        transform: scale(1.1);
+    }
+</style>
+<!--  STYLES -->
+<style>
+    /* Floating Button */
+    
+    .floating-btn {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        background-color: #007bff;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.6rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        z-index: 1200;
+        transition: all 0.3s ease;
+    }
+    
+    .floating-btn:hover {
+        background-color: #0056b3;
+        transform: rotate(45deg);
+    }
+    /* Floating Menu */
+    
+    .floating-menu {
+        position: fixed;
+        bottom: 90px;
+        right: 35px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        z-index: 1100;
+    }
+    
+    .floating-menu.active {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+    
+    .floating-menu button {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .floating-menu button:hover {
+        background-color: #007bff;
+        color: white;
+    }
+    /* Chat Modal */
+    
+    .chat-modal {
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        width: 330px;
+        height: 420px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 2000;
+    }
+    
+    .chat-box {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    
+    .chat-header {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+    }
+    
+    .chat-body {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+        background-color: #f9f9f9;
+    }
+    
+    .chat-footer {
+        display: flex;
+        gap: 5px;
+        padding: 10px;
+        background: #fff;
+        border-top: 1px solid #ddd;
+    }
+    
+    .chat-body .bot-message,
+    .chat-body .user-message {
+        background-color: #e9ecef;
+        padding: 8px 12px;
+        border-radius: 15px;
+        margin-bottom: 10px;
+        max-width: 80%;
+        font-size: 0.9rem;
+    }
+    
+    .chat-body .bot-message {
+        background-color: #007bff;
+        color: white;
+        align-self: flex-start;
+    }
+    
+    .chat-body .user-message {
+        background-color: #f1f1f1;
+        align-self: flex-end;
+    }
+</style>
+</head>
+
+<body>   <!-- ===== Sidebar ===== -->
+    <aside id="sidebar" style="width: 260px; background: #1e1e2f; color: white; height: 100vh; overflow-y: auto;">
+    <div class="text-center p-3">
+        <img src="./logos/hlogo.png" alt="Logo" style="width: 200px; height: auto;" />
+    </div>
+
+    <ul class="list-unstyled px-2">
+
+        <!-- Dashboard -->
+        <li>
+        <a href="./admin_dashboard.html" class="d-flex align-items-center py-2 px-3 text-decoration-none text-white">
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+        </a>
+        </li>
+
+        <!-- Messages -->
+        <li class="position-relative">
+        <a href="./messages.html" class="d-flex align-items-center py-2 px-3 text-decoration-none text-white">
+            <i class="bi bi-envelope me-2"></i>Messages
+            <span id="messageCount" class="badge bg-danger ms-auto rounded-pill">3</span>
+        </a>
+        </li>
+
+        <!-- Quick Actions -->
+        <li class="mt-3 text-uppercase small fw-bold text-secondary px-3">Quick Actions</li>
+        <li>
+        <a href="./user_management.html" class="d-flex align-items-center py-2 px-3 text-decoration-none text-white">
+            <i class="bi bi-person-plus me-2"></i>Add Users
+        </a>
+        </li>
+        <li>
+        <a href="./create_courses.html" class="d-flex align-items-center py-2 px-3 text-decoration-none text-white">
+            <i class="bi bi-journal-text me-2"></i>Create Courses
+        </a>
+        </li>
+        <li>
+        <a href="./post_jobs.html" class="d-flex align-items-center py-2 px-3 text-decoration-none text-white">
+            <i class="bi bi-briefcase me-2"></i>Post Jobs
+        </a>
+        </li>
+        <li>
+        <a href="./system_status.html" class="d-flex align-items-center py-2 px-3 text-decoration-none text-white">
+            <i class="bi bi-cpu me-2"></i>System Status
+        </a>
+        </li>
+
+        <!-- User Management -->
+        <li class="dropdown mt-3">
+        <a href="#" class="d-flex justify-content-between align-items-center py-2 px-3 text-decoration-none text-white">
+            <span><i class="bi bi-people me-2"></i>User Management</span>
+            <i class="bi bi-chevron-down toggle-icon"></i>
+        </a>
+        <ul class="submenu list-unstyled ps-4">
+            <li><a href="user_management.html" class="text-white text-decoration-none d-block py-1">Manage Users</a></li>
+            <li><a href="bulk_upload.html" class="text-white text-decoration-none d-block py-1">Bulk Upload</a></li>
+            <li><a href="user_roles.html" class="text-white text-decoration-none d-block py-1">User Roles</a></li>
+        </ul>
+        </li>
+
+  <!-- Course Management -->
+<li class="dropdown mt-3">
+  <a href="#" class="d-flex justify-content-between align-items-center py-2 px-3 text-decoration-none text-white">
+    <span><i class="bi bi-journal-text me-2"></i>Course Management</span>
+    <i class="bi bi-chevron-down toggle-icon"></i>
+  </a>
+  <ul class="submenu list-unstyled ps-4">
+
+    <li>
+      <a href="view_courses.html" class="text-white text-decoration-none d-block py-1">
+        <i class="bi bi-grid me-2"></i>View Courses
+      </a>
+    </li>
+    <li>
+      <a href="manage_categories.html" class="text-white text-decoration-none d-block py-1">
+        <i class="bi bi-tags me-2"></i>Manage Categories
+      </a>
+    </li>
+  </ul>
+</li>
+
+        <!-- Assignments -->
+        <li class="dropdown">
+        <a href="#" class="d-flex justify-content-between align-items-center py-2 px-3 text-decoration-none text-white">
+            <span><i class="bi bi-journal-text me-2"></i>Assignments</span>
+            <i class="bi bi-chevron-down toggle-icon"></i>
+        </a>
+        <ul class="submenu list-unstyled ps-4">
+            <li><a href="assignment_management.html" class="text-white text-decoration-none d-block py-1">Manage Assignments</a></li>
+            <li><a href="submissions.html" class="text-white text-decoration-none d-block py-1">Submissions</a></li>
+        </ul>
+        </li>
+
+        <!-- Payment -->
+        <li>
+        <a href="payment.html" class="d-flex align-items-center py-2 px-3 text-decoration-none text-white">
+            <i class="bi bi-credit-card me-2"></i>Payment
+        </a>
+        </li>
+
+        <!-- File Upload -->
+        <li>
+        <a href="./file_upload.html" class="d-flex align-items-center py-2 px-3 text-decoration-none text-white">
+            <i class="bi bi-folder2-open me-2"></i>File Upload
+        </a>
+        </li>
+
+        <!-- Announcements (with notification) -->
+        <li class="position-relative">
+        <a href="./announcement.html" class="d-flex align-items-center py-2 px-3 text-decoration-none text-white">
+            <i class="bi bi-megaphone me-2"></i>Announcement
+            <span id="announcementBadge" class="badge bg-danger ms-auto rounded-circle" style="width:10px; height:10px; display:none;"></span>
+        </a>
+        </li>
+
+        <!-- Support & Feedback (with notification) -->
+        <li class="dropdown position-relative">
+        <a href="#" class="d-flex justify-content-between align-items-center py-2 px-3 text-decoration-none text-white">
+            <span><i class="bi bi-chat-square-text me-2"></i>Support & Feedback</span>
+            <div class="d-flex align-items-center">
+            <span id="feedbackBadge" class="badge bg-danger rounded-circle me-2" style="width:10px; height:10px; display:none;"></span>
+            <i class="bi bi-chevron-down toggle-icon"></i>
+            </div>
+        </a>
+        <ul class="submenu list-unstyled ps-4">
+            <li><a href="reports.html" class="text-white text-decoration-none d-block py-1">Reports</a></li>
+            <li><a href="feedback.html" class="text-white text-decoration-none d-block py-1">Feedback</a></li>
+        </ul>
+        </li>
+
+        <!-- Settings -->
+        <li>
+        <a href="site_settings.html" class="d-flex align-items-center py-2 px-3 text-decoration-none text-white">
+            <i class="bi bi-gear me-2"></i>Site Settings
+        </a>
+        </li>
+
+        <!-- Analytics -->
+        <li>
+        <a href="analytics.html" class="d-flex align-items-center py-2 px-3 text-decoration-none text-white">
+            <i class="bi bi-graph-up me-2"></i>Analytics
+        </a>
+        </li>
+
+        <!-- Logout -->
+        <li>
+        <a href="logout.html" class="d-flex align-items-center py-2 px-3 text-decoration-none text-danger">
+            <i class="bi bi-box-arrow-right me-2"></i>Logout
+        </a>
+        </li>
+    </ul>
+    </aside>
+
+
+    <!-- ===== Main Area ===== -->
+    <main>
+        <!-- HEADER -->
+        <header class="d-flex justify-content-around align-items-center flex-wrap px-3 py-2 shadow-sm bg-white">
+            <!-- Left side: Hamburger + Title -->
+            <div class="d-flex align-items-center gap-3">
+                <div class="menu-toggle p-2" id="menu-toggle">
+                    <i class="bi bi-list"></i>
+                </div>
+                <h1 class="h5 fw-bold text-primary mb-0 p-2">Admin Dashboard</h1>
+            </div>
+
+            <!-- Right side -->
+            <div class="d-flex align-items-center gap-3 flex-wrap justify-content-end">
+                <div class="position-relative " style="cursor:pointer;">
+                    <i class="bi bi-bell fs-4"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
+                </div>
+                <!--  Notification Panel -->
+                <div id="notificationPane" class="notification-pane shadow-lg">
+                    <div class="pane-header d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0">Notifications</h5>
+                        <button class="btn-close" id="closeNotification"></button>
+                    </div>
+
+                    <div class="pane-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="notification-item d-flex align-items-start mb-3">
+                                <div class="icon bg-primary-subtle text-primary me-3">
+                                    <i class="bi bi-person-plus"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">New User Registered</h6>
+                                    <p class="small text-muted mb-0">Diamond 💎💎 just joined as a student</p>
+                                    <small class="text-secondary">5 mins ago</small>
+                                </div>
+                            </li>
+
+                            <li class="notification-item d-flex align-items-start mb-3">
+                                <div class="icon bg-success-subtle text-success me-3">
+                                    <i class="bi bi-cash-coin"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Payment Received</h6>
+                                    <p class="small text-muted mb-0">₦15,000 payment from Trinity Academy</p>
+                                    <small class="text-secondary">30 mins ago</small>
+                                </div>
+                            </li>
+
+                            <li class="notification-item d-flex align-items-start mb-3">
+                                <div class="icon bg-warning-subtle text-warning me-3">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Low Disk Space</h6>
+                                    <p class="small text-muted mb-0">Server storage is reaching 90% usage.</p>
+                                    <small class="text-secondary">1 hour ago</small>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pane-footer text-center p-3 border-top">
+                        <a href="#" class="btn btn-outline-primary btn-sm w-100">
+                            <i class="bi bi-list-check me-2"></i>View All Notifications
+                        </a>
+                    </div>
+
+
+                </div>
+
+                <!--  Floating Action Button -->
+                <div class="floating-btn" id="floatingBtn">
+                    <i class="bi bi-plus-lg"></i>
+                </div>
+
+
+                <!-- Floating Menu -->
+                <div class="floating-menu d-flex flex-column align-items-center gap-2 p-2 shadow-lg bg-light rounded-3 border" id="floatingMenu" style="position: fixed; bottom: 80px; right: 25px; z-index: 1050;">
+
+                    <!-- Translator Button -->
+                    <button id="translatorBtn" class="btn btn-outline-primary rounded-circle" title="Translator" data-bs-toggle="tooltip">
+        <i class="bi bi-translate fs-5"></i>
+    </button>
+
+                    <!-- Chat Bot Button -->
+                    <button id="chatBotBtn" class="btn btn-outline-primary rounded-circle" title="Message Bot" data-bs-toggle="tooltip">
+        <i class="bi bi-robot fs-5"></i>
+    </button>
+
+                    <!-- Email Button -->
+                    <button id="emailBtn" class="btn btn-outline-primary rounded-circle" title="Email" data-bs-toggle="tooltip">
+        <i class="bi bi-envelope fs-5"></i>
+    </button>
+
+                    <!-- WhatsApp Button -->
+                    <button id="whatsappBtn" class="btn btn-outline-primary rounded-circle" title="Chat on WhatsApp" data-bs-toggle="tooltip">
+        <i class="bi bi-whatsapp fs-5"></i>
+    </button>
+                </div>
+
+
+                <!--  Chat Bot Modal -->
+                <div class="chat-modal" id="chatModal">
+                    <div class="chat-box">
+                        <div class="chat-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 fw-bold text-white"><i class="bi bi-robot me-2"></i>KJM BOT</h6>
+                            <button class="btn-close btn-close-white" id="closeChat"></button>
+                        </div>
+
+                        <div class="chat-body" id="chatBody">
+                            <div class="bot-message">Hello 👋, I’m KJM BOT. How can I assist you today?</div>
+                        </div>
+
+                        <div class="chat-footer">
+                            <input type="text" id="userInput" class="form-control" placeholder="Type your message..." />
+                            <button id="sendBtn" class="btn btn-primary"><i class="bi bi-send"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- SCRIPT -->
+                <script>
+                    const floatingBtn = document.getElementById('floatingBtn');
+                    const floatingMenu = document.getElementById('floatingMenu');
+                    const chatBtn = document.getElementById('chatBotBtn');
+                    const chatModal = document.getElementById('chatModal');
+                    const closeChat = document.getElementById('closeChat');
+                    const sendBtn = document.getElementById('sendBtn');
+                    const chatBody = document.getElementById('chatBody');
+                    const userInput = document.getElementById('userInput');
+
+                    // Toggle floating tools
+                    floatingBtn.addEventListener('click', () => {
+                        floatingMenu.classList.toggle('active');
+                        floatingBtn.classList.toggle('active');
+                    });
+                    // Initialize Bootstrap tooltips
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                        tooltipTriggerList.map(function(tooltipTriggerEl) {
+                            return new bootstrap.Tooltip(tooltipTriggerEl)
+                        })
+                    });
+
+                    // Translator button redirect (Google Translate)
+                    document.getElementById('translatorBtn').addEventListener('click', () => {
+                        window.open('https://translate.google.com', '_blank');
+                    });
+
+                    // Email button redirect
+                    document.getElementById('emailBtn').addEventListener('click', () => {
+                        window.location.href = 'mailto:kingjmedia.org@gmail.com?subject=Quick%20Message%20from%20Admin%20Panel';
+                    });
+
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const whatsappBtn = document.getElementById("whatsappBtn");
+                        if (whatsappBtn) {
+                            whatsappBtn.addEventListener("click", () => {
+                                const phone = "+2348028786923";
+                                const message = encodeURIComponent("Hello, I’d like to make a payment. Can you assist me?");
+                                window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
+                            });
+                        }
+                    });
+                    // Open Chat Bot
+                    chatBtn.addEventListener('click', () => {
+                        chatModal.style.display = 'flex';
+                        floatingMenu.classList.remove('active');
+                    });
+
+                    // Close Chat
+                    closeChat.addEventListener('click', () => {
+                        chatModal.style.display = 'none';
+                    });
+
+                    // Send Message
+                    sendBtn.addEventListener('click', sendMessage);
+                    userInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') sendMessage();
+                    });
+
+                    function sendMessage() {
+                        const message = userInput.value.trim();
+                        if (!message) return;
+
+                        // User message
+                        const userMsg = document.createElement('div');
+                        userMsg.classList.add('user-message');
+                        userMsg.textContent = message;
+                        chatBody.appendChild(userMsg);
+                        userInput.value = '';
+
+                        chatBody.scrollTop = chatBody.scrollHeight;
+
+                        // Bot reply
+                        setTimeout(() => {
+                            const botMsg = document.createElement('div');
+                            botMsg.classList.add('bot-message');
+
+                            // Simple AI-like responses
+                            const lower = message.toLowerCase();
+                            if (lower.includes('hello') || lower.includes('hi')) {
+                                botMsg.textContent = "Hi there! 👋 I’m KJM BOT. How can I help you?";
+                            } else if (lower.includes('payment')) {
+                                botMsg.textContent = "You can make payments via Opay, Palmpay, Monnify, or ATM card 💳.";
+                            } else if (lower.includes('help') || lower.includes('support')) {
+                                botMsg.textContent = "Sure! Please describe what you need help with.";
+                            } else {
+                                botMsg.textContent = "Interesting... let me check on that 🧠💭";
+                            }
+
+                            chatBody.appendChild(botMsg);
+                            chatBody.scrollTop = chatBody.scrollHeight;
+                        }, 700);
+                    }
+                </script>
+
+                <div class="p-2">
+                    <input type="search" class="form-control form-control-sm" placeholder="Search..." style="width: 200px;">
+                </div>
+
+             <!-- Profile Dropdown -->
+                <div class="dropdown d-flex align-items-center">
+                <!-- Profile Image (also triggers dropdown) -->
+                <img id="headerProfileImg" 
+                    src="./images/1.png" 
+                    alt="Profile" 
+                    class="rounded-circle me-2 dropdown-toggle" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false" 
+                    width="45" height="45" 
+                    style="cursor:pointer;">
+
+                <!-- Profile Name (also triggers dropdown) -->
+                <div class="d-flex align-items-center text-dark fw-semibold dropdown-toggle" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false" 
+                    style="cursor:pointer;">
+                    <span id="profileNameDisplay" class="me-1">Hi, Jeremiah</span>
+                   
+                </div>
+
+                <!-- Dropdown Menu -->
+                <ul class="dropdown-menu dropdown-menu-end shadow">
+                    <li>
+                    <a class="dropdown-item" href="#" id="activateEdit" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <i class="bi bi-pencil me-2"></i>Edit Profile
+                    </a>
+                    </li>
+                    <li>
+                    <a class="dropdown-item text-danger" href="logout.html">
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </a>
+                    </li>
+                </ul>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- EDIT PROFILE MODAL -->
+        <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">Edit Profile</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="profileForm">
+                            <div class="text-center mb-3">
+                                <img id="previewImage" src="./images/1.png" class="rounded-circle border" width="100" height="100" style="object-fit:cover;">
+                                <input type="file" id="profilePicInput" accept="image/*" class="form-control mt-2">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullname" value="Jeremiah Isaiah">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" value="jeremiah@example.com">
+                            </div>
+
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- IMAGE CROP MODAL -->
+        <div class="modal fade" id="cropModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark text-white">
+                        <h5 class="modal-title">Crop Profile Image</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img id="cropImage" src="" alt="Crop Preview" class="img-fluid" style="max-height:400px; display:none;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="cropSaveBtn" class="btn btn-success">Save Crop</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+<!-- Scrollable Content -->
+<!-- Scrollable Content -->
+  <div class="main-content container py-4 px-4">
+    <div class="mb-4">
+      <h2 class="h5 fw-semibold mb-3">Welcome, Admin</h2>
+      <p>Here is your system’s current health status and maintenance tools.</p>
+    </div>
+
+    <!-- System Health Card -->
+    <div class="card shadow p-4 mb-4">
+      <h3 class="fw-bold text-center mb-3">System Health Monitor</h3>
+
+      <div class="mb-3">
+        <label class="fw-semibold">CPU Usage</label>
+        <div class="progress">
+          <div id="cpuBar" class="progress-bar bg-primary" style="width: 0%;">0%</div>
+        </div>
+        <p id="cpuStatus" class="small mt-1 text-muted"></p>
+      </div>
+
+      <div class="mb-3">
+        <label class="fw-semibold">Memory Usage</label>
+        <div class="progress">
+          <div id="memoryBar" class="progress-bar bg-success" style="width: 0%;">0%</div>
+        </div>
+        <p id="memoryStatus" class="small mt-1 text-muted"></p>
+      </div>
+
+      <div class="mb-3">
+        <label class="fw-semibold">Disk Usage</label>
+        <div class="progress">
+          <div id="diskBar" class="progress-bar bg-warning" style="width: 0%;">0%</div>
+        </div>
+        <p id="diskStatus" class="small mt-1 text-muted"></p>
+      </div>
+
+      <div class="mb-3 text-center">
+        <p id="tempStatus" class="fs-5 fw-bold text-center text-success">Loading...</p>
+      </div>
+
+      <div class="text-center mt-4">
+        <button id="refreshStatus" class="btn btn-primary me-2"><i class="bi bi-arrow-clockwise"></i> Refresh Status</button>
+        <button id="coolantBtn" class="btn btn-info me-2"><i class="bi bi-snow"></i> Activate Coolant</button>
+        <button id="cleanJunkBtn" class="btn btn-danger"><i class="bi bi-trash3"></i> Clean Junk</button>
+      </div>
+    </div>
+  </div>
+
+
+
+        <footer>
+            <small>© 2025 King J Media Tech Hub — All rights reserved.</small>
+        </footer>
+    </main>
+
+
+
+    <!-- REQUIRED LIBRARIES -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css " rel="stylesheet ">
+    <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.1/dist/cropper.min.css " rel="stylesheet ">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js "></script>
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.1/dist/cropper.min.js "></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11 "></script>
+
+    <!-- JS Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.1/dist/cropper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+    <script>
+        /* ===========================
+                         ADD MULTIPLE BUTTON
+                  =========================== */
+        document.querySelectorAll('.add-multiple-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                Swal.fire('Coming Soon', `Bulk add feature coming soon!`, 'info');
+            });
+        });
+    </script>
+
+    <script>
+        /* =========================
+         SIDEBAR TOGGLE (MOBILE + DESKTOP)
+             =========================== */
+        const toggleBtn = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        if (toggleBtn) {
+            const icon = toggleBtn.querySelector('i');
+            toggleBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+                const isOpen = sidebar.classList.contains('active');
+                icon.className = isOpen ? 'bi bi-x-lg' : 'bi bi-list';
+            });
+        }
+    </script>
+
+    <script>
+        /* ===========================
+            NOTIFICATION PANEL
+            =========================== */
+        const bellIcon = document.querySelector('.bi-bell');
+        const pane = document.getElementById('notificationPane');
+        const closeBtn = document.getElementById('closeNotification');
+
+        if (bellIcon) {
+            bellIcon.addEventListener('click', () => pane.classList.toggle('active'));
+        }
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => pane.classList.remove('active'));
+        }
+    </script>
+
+    <script>
+        /* ===========================
+        SIDEBAR DROPDOWN ANIMATION
+    =========================== */
+        document.querySelectorAll('.dropdown > a').forEach(trigger => {
+            trigger.addEventListener('click', e => {
+                e.preventDefault();
+                const submenu = trigger.nextElementSibling;
+                const icon = trigger.querySelector('.toggle-icon');
+                submenu.classList.toggle('show');
+                if (icon) {
+                    icon.classList.toggle('rotate');
+                }
+            });
+        });
+    </script>
+
+    <!-- PROFILE & CROPPER SCRIPT -->
+    <script>
+        const profilePicInput = document.getElementById('profilePicInput');
+        const cropImage = document.getElementById('cropImage');
+        const cropModalEl = document.getElementById('cropModal');
+        const editProfileModalEl = document.getElementById('editProfileModal');
+        const cropModal = new bootstrap.Modal(cropModalEl);
+        const previewImage = document.getElementById('previewImage');
+        const headerProfileImg = document.getElementById('headerProfileImg');
+        let cropper;
+
+        // load saved profile
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedImage = localStorage.getItem('profileImage');
+            const savedName = localStorage.getItem('profileName');
+            const savedEmail = localStorage.getItem('profileEmail');
+
+            if (savedImage) {
+                headerProfileImg.src = savedImage;
+                previewImage.src = savedImage;
+            }
+            if (savedName) document.getElementById('fullname').value = savedName;
+            if (savedEmail) document.getElementById('email').value = savedEmail;
+        });
+
+        // image selected
+        profilePicInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                cropImage.src = event.target.result;
+                if (cropper) cropper.destroy();
+
+                cropModal.show();
+                cropper = new Cropper(cropImage, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    movable: true,
+                    zoomable: true
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // crop
+        document.getElementById('cropSaveBtn').addEventListener('click', () => {
+            if (!cropper) return;
+            const canvas = cropper.getCroppedCanvas({
+                width: 200,
+                height: 200
+            });
+            const croppedDataUrl = canvas.toDataURL();
+
+            previewImage.src = croppedDataUrl;
+            headerProfileImg.src = croppedDataUrl;
+            localStorage.setItem('profileImage', croppedDataUrl);
+            cropModal.hide();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Profile Updated!',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        });
+
+        // save profile info
+        document.getElementById('profileForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            localStorage.setItem('profileName', document.getElementById('fullname').value.trim());
+            localStorage.setItem('profileEmail', document.getElementById('email').value.trim());
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Profile Saved!',
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+            setTimeout(() => {
+                bootstrap.Modal.getInstance(editProfileModalEl).hide();
+                document.body.classList.remove('modal-open');
+                document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+            }, 1200);
+        });
+    </script>
+
+            <!-- Activate Dropdown with JS -->
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                // Select all dropdown triggers
+                const dropdownTriggers = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+
+                // Initialize Bootstrap dropdowns
+                dropdownTriggers.forEach(el => {
+                    new bootstrap.Dropdown(el);
+                });
+
+                // Optional: toggle dropdown manually when clicking anywhere inside the profile area
+                const profileArea = document.querySelector('.dropdown.d-flex.align-items-center');
+                const dropdownMenu = profileArea.querySelector('.dropdown-menu');
+                const dropdownInstance = new bootstrap.Dropdown(profileArea.querySelector('[data-bs-toggle="dropdown"]'));
+
+                profileArea.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent bubbling
+                    dropdownInstance.toggle();
+                });
+                });
+        </script>
+
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+  function randomPercent() {
+    return Math.floor(Math.random() * 100);
+  }
+
+  function updateStatus() {
+    const cpu = randomPercent();
+    const memory = randomPercent();
+    const disk = randomPercent();
+    const temp = Math.floor(Math.random() * (75 - 25 + 1)) + 25;
+
+    // Update Bars
+    document.getElementById('cpuBar').style.width = cpu + '%';
+    document.getElementById('cpuBar').textContent = cpu + '%';
+    document.getElementById('memoryBar').style.width = memory + '%';
+    document.getElementById('memoryBar').textContent = memory + '%';
+    document.getElementById('diskBar').style.width = disk + '%';
+    document.getElementById('diskBar').textContent = disk + '%';
+
+    // CPU Status
+    let cpuStatus =
+      cpu < 40
+        ? '<i class="bi bi-cpu text-success"></i> CPU Load: Low and Stable'
+        : cpu < 70
+        ? '<i class="bi bi-cpu text-warning"></i> CPU Load: Moderate'
+        : '<i class="bi bi-cpu text-danger"></i> CPU Load: High';
+    document.getElementById('cpuStatus').innerHTML = cpuStatus;
+
+    // Memory Status
+    let memoryStatus =
+      memory < 50
+        ? '<i class="bi bi-memory text-success"></i> Memory Usage: Healthy'
+        : memory < 80
+        ? '<i class="bi bi-memory text-warning"></i> Memory Usage: Warning'
+        : '<i class="bi bi-memory text-danger"></i> Memory Usage: Critical';
+    document.getElementById('memoryStatus').innerHTML = memoryStatus;
+
+    // Disk Status
+    let diskStatus =
+      disk < 60
+        ? '<i class="bi bi-hdd text-success"></i> Disk Space: Plenty Available'
+        : disk < 85
+        ? '<i class="bi bi-hdd text-warning"></i> Disk Space: Getting Full'
+        : '<i class="bi bi-hdd text-danger"></i> Disk Space: Almost Full';
+    document.getElementById('diskStatus').innerHTML = diskStatus;
+
+    // Temperature Status
+    let tempStatus = '';
+    let color = 'text-success';
+    if (temp < 35) {
+      tempStatus = `<i class="bi bi-snow text-info"></i> Cool (${temp}°C)`;
+      color = 'text-info';
+    } else if (temp < 60) {
+      tempStatus = `<i class="bi bi-thermometer-half text-success"></i> Normal (${temp}°C)`;
+      color = 'text-success';
+    } else {
+      tempStatus = `<i class="bi bi-thermometer-high text-danger"></i> Hot (${temp}°C)`;
+      color = 'text-danger';
+    }
+    const tempElem = document.getElementById('tempStatus');
+    tempElem.innerHTML = tempStatus;
+    tempElem.className = `fs-5 fw-bold text-center ${color}`;
+
+    // Summary Alert
+    let optimal = cpu < 70 && memory < 70 && disk < 80 && temp < 60;
+    Swal.fire({
+      icon: optimal ? 'success' : 'warning',
+      title: 'System Health Report',
+      html: optimal
+        ? '<i class="bi bi-check-circle text-success fs-4"></i> System is performing optimally!'
+        : '<i class="bi bi-exclamation-triangle text-warning fs-4"></i> Some components are under load. Consider maintenance.',
+      timer: 3000,
+      showConfirmButton: false,
+    });
+  }
+
+  // Coolant Activation
+  document.getElementById('coolantBtn').addEventListener('click', () => {
+    Swal.fire({
+      title: '<i class="bi bi-snow text-info fs-4"></i> Activating Coolant System...',
+      html: 'Cooling processors and stabilizing temperature <i class="bi bi-fan"></i>',
+      timer: 2000,
+      didOpen: () => Swal.showLoading(),
+    }).then(() => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Coolant Activated',
+        html: '<i class="bi bi-snow text-info"></i> System temperature reduced successfully!',
+      });
+      updateStatus();
+    });
+  });
+
+  // Junk Removal
+  document.getElementById('cleanJunkBtn').addEventListener('click', () => {
+    Swal.fire({
+      title: '<i class="bi bi-trash3 text-danger"></i> Running Junk File Cleanup...',
+      html: 'Deleting cache and temporary files <i class="bi bi-arrow-repeat"></i>',
+      timer: 2500,
+      didOpen: () => Swal.showLoading(),
+    }).then(() => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Cleanup Complete',
+        html: '<i class="bi bi-check2-circle text-success"></i> Junk files removed and disk performance optimized!',
+      });
+      updateStatus();
+    });
+  });
+
+  // Refresh Status
+  document.getElementById('refreshStatus').addEventListener('click', updateStatus);
+
+  // Load on Start
+  updateStatus();
+</script>
+
+
+
+
+</body>
+</html>
